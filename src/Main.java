@@ -6,7 +6,7 @@ public class Main{
     public static int Zc = 4;
 
 
-       //________________________________________________
+       //||||||||||||||||||||||||||||||||||||||||||||||\\
       //                                                \\
      //      Modulo Checar Estabilidade de matrizes      \\
     //                                                    \\
