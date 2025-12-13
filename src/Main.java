@@ -1,11 +1,6 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
-
 public class Main{
 
-    public static int Zc = 4;
+    public static int Zc = 4;                          //Constante do número crítico
 
     //||||||||||||||||||||||||||||||||||||||||||||\\
    //                                              \\
@@ -13,7 +8,7 @@ public class Main{
  //                                                  \\
     public static int[][] toppingMatrizes(int[][] matriz) {
 
-        int numeroIndiceMáximo = matriz.length - 1;   //É a váriavel que armazena o maior Índice da coluna e da linha
+        int numeroIndiceMaximo = matriz.length - 1;   //É a váriavel que armazena o maior Índice da coluna e da linha
         int nDaMatriz = matriz[0].length;             //É a váriavel que armazena a quantidade de termos em cada coluna e linha
         int termoAnulado = 0;                         //É uma váriavel usada para anular o termo selecionado no "for" que seja maior ou igual a Zc (número crítico)
 
@@ -35,11 +30,11 @@ public class Main{
 
                         matriz[i][j - 1] ++;
                     }
-                    if ( i < numeroIndiceMáximo) {
+                    if ( i < numeroIndiceMaximo) {
 
                         matriz[i + 1][j] ++;
                     }
-                    if ( j < numeroIndiceMáximo) {
+                    if ( j < numeroIndiceMaximo) {
 
                         matriz[i][j + 1] ++;
                     }
