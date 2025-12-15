@@ -5,7 +5,6 @@ public class Main{
 
     public static int Zc = 4;
 
-
        //||||||||||||||||||||||||||||||||||||||||||||||\\
       //                                                \\
      //      Modulo Checar Estabilidade de matrizes      \\
@@ -13,10 +12,10 @@ public class Main{
     public boolean ChecadorDeEstabilidadeDeMatrizes ( int [][] matriz){
 
         //Ciclos "enchented for" percorrem todos os termos da matriz
-        for ( int [] linha : matriz ){
-            for ( int termo : linha ){
+        for ( int i = 0; i < matriz.length - 1; i++ ){
+            for ( int j = 0; j < matriz[i].length - 1; j++ ){
                 //Termo selecionado
-                if ( termo >= Zc){
+                if ( matriz[i][j] >= Zc){
                     //Se um termo selecionado for maior ou igual a Zc, a Matriz não é estável
                     return false;
                 }
