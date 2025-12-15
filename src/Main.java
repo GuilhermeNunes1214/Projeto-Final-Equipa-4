@@ -10,7 +10,6 @@ public class Main{
 
         int numeroIndiceMaximo = matriz.length - 1;   //É a váriavel que armazena o maior Índice da coluna e da linha
         int nDaMatriz = matriz[0].length;             //É a váriavel que armazena a quantidade de termos em cada coluna e linha
-        int termoAnulado = 0;                         //É uma váriavel usada para anular o termo selecionado no "for" que seja maior ou igual a Zc (número crítico)
 
         //Ciclo dos termos da Matriz
         for (int i = 0; i < nDaMatriz; i++) {
@@ -18,7 +17,7 @@ public class Main{
                 //O topping é apenas aplicado se o termo selecionado for maior ou igual ao Zc (nnúmero crítico da rede)
                 if (matriz[i][j] >= Zc) {
                     //O termo é anulado
-                    matriz[i][j] = termoAnulado;
+                    matriz[i][j] -= Zc;
 
                     //Certas áreas da matriz possuem propriedades genéricas quando sofrem toppin dependendo da sua posição em relação a bordas
                     //(Operações abaixo:)
