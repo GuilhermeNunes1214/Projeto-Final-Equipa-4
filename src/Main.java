@@ -153,4 +153,20 @@ public class Main{
         }
         return matriz;
   }
+    public static void escreverMatrizParaCSV(int[][] matriz, String nomeFicheiroSaida) throws FileNotFoundException {
+        File ficheiro = new File("Output/" + nomeFicheiroSaida);
+        PrintWriter escrever = new PrintWriter(ficheiro);
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                escrever.print(matriz[i][j]);
+                if (j < matriz[i].length - 1) {
+                    escrever.print(",");
+                }
+            }
+            escrever.println();
+        }
+        escrever.close();
+        System.out.println("Ficheiro guardado: " + ficheiro.getPath());
+    }
 }
+
