@@ -56,4 +56,11 @@ import java.awt.Color;
             File outputFile = new File(outputFilePath);
             ImageIO.write(image, "jpg", outputFile);
         }
+        public static void main() {
+        String outputJPG = "Output/teste4x4.jpg";
+        try {
+            writeArrayAsImage(matriz, outputJPG);
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar a imagem: " + e.getMessage());
+        }
     }
