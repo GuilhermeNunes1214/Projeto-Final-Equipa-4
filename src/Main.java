@@ -26,6 +26,12 @@ public class Main{
     int celulasQueimadas = 0;                         //numero de celulas queimadas
     boolean novasQueimadas = true;                    //Boolean para ou continua o while
 
+    for ( int i = 0 ; i < n ; i++ ) {
+        for ( int j = 0 ; j < n ; j++ ) {
+
+            matrizDasQueimadas[i][j] = 0;
+        }
+    }
     while (novasQueimadas) {
         novasQueimadas = false;
 
