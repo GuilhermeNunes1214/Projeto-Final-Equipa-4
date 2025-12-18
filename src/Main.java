@@ -1,7 +1,62 @@
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-public class Main{
+public class Main {
+    /**
+     * Writes a 2D array as a heatmap image, mapping:
+     * 0 -> White
+     * 1 -> Yellow
+     * 2 -> Brown
+     * 3 -> Red
+     * >3 -> Blue
+     *
+     * @param array          the 2D array of integers representing values.
+     * @param outputFilePath the file path to save the image.
+     * @throws IOException if an error occurs during writing the image.
+     */
+    public static void writeArrayAsImage(int[][] array, String outputFilePath) throws IOException {
+        int height = array.length;
+        int width = array[0].length;
+
+        // Create an RGB image
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        // Set pixel colors according to the mapping
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int value = array[y][x];
+                Color color;
+
+                switch (value) {
+                    case 0:
+                        color = Color.WHITE;
+                        break;
+                    case 1:
+                        color = Color.YELLOW;
+                        break;
+                    case 2:
+                        color = new Color(150, 75, 0); // Brown (não existe no Color padrão)
+                        break;
+                    case 3:
+                        color = Color.RED;
+                        break;
+                    default:
+                        color = Color.BLUE;
+                        break;
+                }
+
+                image.setRGB(x, y, color.getRGB());
+            }
+        }
+        // Save image
+        File outputFile = new File(outputFilePath);
+        ImageIO.write(image, "jpg", outputFile);
+    }
+
     public static void imprimirMatriz(int[][] matriz) {
         System.out.println("Matriz Inicial:");
         for (int i = 0; i < matriz.length; i++) {
@@ -16,9 +71,9 @@ public class Main{
     public static int Zc = 4;                          //Constante do número crítico
 
     //||||||||||||||||||||||||||||||||||||||||||||\\
-   //                                              \\
-  //           Modulo Operação Toppin               \\
- //                                                  \\
+    //                                              \\
+    //           Modulo Operação Toppin               \\
+    //                                                  \\
     public static int[][] toppingMatrizes(int[][] matriz) {
 
         int numeroIndiceMaximo = matriz.length - 1;   //É a váriavel que armazena o maior Índice da coluna e da linha
@@ -34,21 +89,21 @@ public class Main{
 
                     //Certas áreas da matriz possuem propriedades genéricas quando sofrem toppin dependendo da sua posição em relação a bordas
                     //(Operações abaixo:)
-                    if ( i > 0 ) {
+                    if (i > 0) {
 
-                        matriz[i - 1][j] ++;
+                        matriz[i - 1][j]++;
                     }
-                    if ( j > 0 ) {
+                    if (j > 0) {
 
-                        matriz[i][j - 1] ++;
+                        matriz[i][j - 1]++;
                     }
-                    if ( i < numeroIndiceMaximo) {
+                    if (i < numeroIndiceMaximo) {
 
-                        matriz[i + 1][j] ++;
+                        matriz[i + 1][j]++;
                     }
-                    if ( j < numeroIndiceMaximo) {
+                    if (j < numeroIndiceMaximo) {
 
-                        matriz[i][j + 1] ++;
+                        matriz[i][j + 1]++;
                     }
                 }
             }
@@ -56,74 +111,86 @@ public class Main{
         //A matriz é retornada depois de sofrer toppin
         return matriz;
     }
-    public static int[][] somaMatrizes(int[][] matriz1,int[][] matriz2) {
+
+    public static int[][] somaMatrizes(int[][] matriz1, int[][] matriz2) {
 
         int linhas = matriz1.length;
         int colunas = matriz1[0].length;
-        int [][] matrizresultante = new int[linhas][colunas];
+        int[][] matrizresultante = new int[linhas][colunas];
 
-        for (int i = 0 ;i < linhas; i++ ) {
-            for (int j = 0 ; j < colunas; j++ ) {
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
                 matrizresultante[i][j] = matriz1[i][j] + matriz2[i][j];
             }
         }
         return matrizresultante;
     }
 
-
-       //-----------------------------------------------------------------------------\\
-      //                                                                               \\
-     //    Verificar se Matriz estbilizada é recorrente (ALgaritimo de Burning Dhar)    \\
+    //-----------------------------------------------------------------------------\\
+    //                                                                               \\
+    //    Verificar se Matriz estbilizada é recorrente (Algoritimo de Burning Dhar)    \\
     //                                                                                   \\
-    public static boolean checadorDeRecorrenciaDeMatriz ( int [][] matriz){
+    public static boolean checadorDeRecorrenciaDeMatriz(int[][] matriz) {
 
-    int n = matriz.length;                            //numero de termos por linha ou coluna
-    int [][] matrizDasQueimadas = new int[n][n];      //matriz (termo=0 quando não queimado)(termo=1 quando queimado)
-    int celulasQueimadas = 0;                         //numero de celulas queimadas
-    boolean novasQueimadas = true;                    //Boolean para ou continua o while
+        int n = matriz.length;                            //numero de termos por linha ou coluna
+        int[][] matrizDasQueimadas = new int[n][n];      //matriz (termo=0 quando não queimado)(termo=1 quando queimado)
+        int celulasQueimadas = 0;                         //numero de celulas queimadas
+        boolean novasQueimadas = true;                    //Boolean para ou continua o while
 
-    for ( int i = 0 ; i < n ; i++ ) {
-        for ( int j = 0 ; j < n ; j++ ) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
 
-            matrizDasQueimadas[i][j] = 0;
+                matrizDasQueimadas[i][j] = 0;
+            }
         }
-    }
-    while (novasQueimadas) {
-        novasQueimadas = false;
+        while (novasQueimadas) {
+            novasQueimadas = false;
 
-        for ( int i = 0; i < n; i++) {
-            for ( int j = 0; j < n; j++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
 
-                if ( matrizDasQueimadas [i][j] == 0 ){
+                    if (matrizDasQueimadas[i][j] == 0) {
 
-                    int U = 0;                       //número de vizinhos ortogonais não queimados do termo selecionado
+                        int U = 0;                       //número de vizinhos ortogonais não queimados do termo selecionado
 
-                    if ( i > 0 ) {
-                        if ( matrizDasQueimadas[i-1][j] == 0 ) { U ++; }
-                    }
-                    if ( j > 0 ) {
-                        if ( matrizDasQueimadas[i][j-1] == 0 ) { U ++; }
-                    }
-                    if ( i < n - 1) {
-                        if ( matrizDasQueimadas[i+1][j] == 0 ) { U ++; }
-                    }
-                    if ( j < n - 1 ) {
-                        if ( matrizDasQueimadas[i][j+1] == 0 ) { U ++; }
-                    }
-                    if ( matriz[i][j] >= U ) {
-                        matrizDasQueimadas[i][j] = 1;   //O termo selecionado queima
-                        novasQueimadas = true;          //While mais uma vez
-                        celulasQueimadas++;
+                        if (i > 0) {
+                            if (matrizDasQueimadas[i - 1][j] == 0) {
+                                U++;
+                            }
+                        }
+                        if (j > 0) {
+                            if (matrizDasQueimadas[i][j - 1] == 0) {
+                                U++;
+                            }
+                        }
+                        if (i < n - 1) {
+                            if (matrizDasQueimadas[i + 1][j] == 0) {
+                                U++;
+                            }
+                        }
+                        if (j < n - 1) {
+                            if (matrizDasQueimadas[i][j + 1] == 0) {
+                                U++;
+                            }
+                        }
+                        if (matriz[i][j] >= U) {
+                            matrizDasQueimadas[i][j] = 1;   //O termo selecionado queima
+                            novasQueimadas = true;          //While mais uma vez
+                            celulasQueimadas++;
+                        }
                     }
                 }
             }
         }
+        if (celulasQueimadas == n * n) {
+            return true;
+        }  //matriz é recorrente
+        else {
+            return false;
+        }  //matriz não é recorrente
     }
-    if (celulasQueimadas == n*n) {return true ;}  //matriz é recorrente
-    else                         {return false;}  //matriz não é recorrente
-    }
-}
-  public static int[][] lerMatriz(String nomeFicheiro) throws FileNotFoundException {
+
+    public static int[][] lerMatriz(String nomeFicheiro) throws FileNotFoundException {
         Scanner ler = new Scanner(new File(nomeFicheiro));
         int[][] matriz = null;
         int linhaAtual = 0;
@@ -152,5 +219,10 @@ public class Main{
             System.exit(0);
         }
         return matriz;
-  }
+    }
+
+    public static void main(String[] args) throws IOException {
+        String outputJPG = "Output/teste4x4.jpg";
+        writeArrayAsImage(matriz, outputJPG);
+    }
 }
