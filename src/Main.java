@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 public class Main{
+
     public static void imprimirMatriz(int[][] matriz) {
         System.out.println("Matriz Inicial:");
         for (int i = 0; i < matriz.length; i++) {
@@ -122,8 +123,8 @@ public class Main{
     if (celulasQueimadas == n*n) {return true ;}  //matriz é recorrente
     else                         {return false;}  //matriz não é recorrente
     }
-}
-  public static int[][] lerMatriz(String nomeFicheiro) throws FileNotFoundException {
+
+    public static int[][] lerMatriz(String nomeFicheiro) throws FileNotFoundException {
         Scanner ler = new Scanner(new File(nomeFicheiro));
         int[][] matriz = null;
         int linhaAtual = 0;
@@ -152,5 +153,60 @@ public class Main{
             System.exit(0);
         }
         return matriz;
-  }
+    }
+    public static void funcionalidade_5(int[][] matrizE, int Zc) {
+
+        boolean elementoneutro = false;
+
+        int termoAntigo = Zc - 1;                // valor máximo antes do colapso
+        int dimensaoE = matrizE.length;          // dimensão da matriz
+        int total = (int) Math.pow(Zc, dimensaoE * dimensaoE);  // total de matrizes estáveis possíveis
+
+        int[][] matrizI = new int[dimensaoE][dimensaoE];       // matriz identidade candidata
+        int[][] matrizMax = new int[dimensaoE][dimensaoE];     // matriz máxima (todas células com termoAntigo)
+        int[][] matrizP = new int[dimensaoE][dimensaoE];       // matriz auxiliar para gerar S
+
+        // Criar conjuntoS como array unidimensional de matrizes
+        int[][][] conjuntoS = new int[total][dimensaoE][dimensaoE];
+        int sIndex = 0;  // índice para preencher conjuntoS
+
+        // Gerador da matriz máxima + inicializa matriz identidade
+        for (int i = 0; i < dimensaoE; i++) {
+            for (int j = 0; j < dimensaoE; j++) {
+                matrizMax[i][j] = termoAntigo;
+                matrizI[i][j] = termoAntigo + termoAntigo;   // soma de máximos para identidade
+            }
+        }
+
+        // Estabiliza matriz identidade
+        while (!checarEstabilidadeDeMatriz(matrizI)) {
+            matrizI = toppingMatrizes(matrizI);
+        }
+
+        // Gerar todas as matrizes estáveis usando base Zc
+        for (int k = 0; k < total; k++) {
+            int temp = k;
+
+            for (int i = 0; i < dimensaoE; i++) {
+                for (int j = 0; j < dimensaoE; j++) {
+                    matrizP[i][j] = temp % Zc;  // cada célula recebe 0..Zc-1
+                    temp /= Zc;
+                }
+            }
+
+            // Se for recorrente, salvar no conjuntoS
+            if (checadorDeRecorrenciaDeMatriz(matrizP)) {
+                for (int i = 0; i < dimensaoE; i++) {
+                    for (int j = 0; j < dimensaoE; j++) {
+                        conjuntoS[sIndex][i][j] = matrizP[i][j];
+
+                    }
+                }
+                sIndex++;
+            }
+        }
+        matrizRqualquer = mat
+
+
+    if ( somaMatrizes (int matrizE, int )
 }
