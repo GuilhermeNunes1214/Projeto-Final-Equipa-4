@@ -274,42 +274,68 @@ public class Main {
     public static void executeFunctionality5() throws FileNotFoundException, IOException {
         System.out.println("--- Funcionalidade 5: Verificar se a matriz E é elemento neutro de R ---");
 
-        System.out.print("Nome do ficheiro CSV da Matriz A (Configuração Recorrente): ");
-        String nomeFicheiroA = scanner.nextLine();
         System.out.print("Nome do ficheiro CSV da Matriz E (Candidato a Elemento Neutro): ");
         String nomeFicheiroE = scanner.nextLine();
-
-        int[][] matrizA = lerMatriz(nomeFicheiroA);
         int[][] matrizE = lerMatriz(nomeFicheiroE);
 
-        if (matrizA == null || matrizE == null) return;
+        if (matrizE == null) return;
 
-        if (matrizA.length != matrizE.length || matrizA[0].length != matrizE[0].length) {
-            System.out.println("ERRO: As matrizes A e E devem ter a mesma dimensão (ser quadradas do mesmo tamanho).");
-            return;
+        int n = matrizE.length;
+
+        // Calcula o total de combinações possíveis (4^(n*n))
+        // Nota: Utiliza 'long' para suportar números grandes
+        long totalCombinacoes = (long) Math.pow(4, n * n);
+        long countRecorrentes = 0;
+        boolean isNeutro = true;
+
+        System.out.println("A iniciar verificação para dimensão " + n + "x" + n + "...");
+        System.out.println("Total de configurações a testar: " + totalCombinacoes);
+
+        // Loop que gera todas as matrizes possíveis (de 0 a totalCombinacoes)
+        for (long k = 0; k < totalCombinacoes; k++) {
+
+            // 1. Converter o índice 'k' numa Matriz A (Base 4)
+            int[][] matrizA = new int[n][n];
+            long tempK = k;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    matrizA[i][j] = (int) (tempK % 4);
+                    tempK /= 4;
+                }
+            }
+
+            // 2. Verificar se A pertence ao conjunto Recorrente (R)
+            if (checadorDeRecorrenciaDeMatriz(matrizA)) {
+                countRecorrentes++;
+
+                // 3. Verificar a propriedade do Elemento Neutro: (A + E) estabilizado == A
+                // Usa os métodos existentes: calculateStableAddition e areMatrizesIguais
+                int[][] resultado = calculateStableAddition(matrizA, matrizE);
+
+                if (resultado == null) {
+                    System.out.println("\nERRO CRÍTICO: Falha no cálculo da estabilização.");
+                    return;
+                }
+
+                if (!areMatrizesIguais(matrizA, resultado)) {
+                    isNeutro = false;
+                    System.out.println("\nFALHA ENCONTRADA!");
+                    System.out.println("A matriz E falhou para a seguinte configuração recorrente A:");
+                    imprimirMatriz(matrizA);
+                    System.out.println("Resultado da soma (A ⊕ E):");
+                    imprimirMatriz(resultado);
+                    break; // Para o loop assim que encontrar uma falha
+                }
+            }
         }
 
-        if (!checadorDeRecorrenciaDeMatriz(matrizA)) {
-            System.out.println("AVISO: A Matriz A não é uma configuração recorrente, o teste pode ser inválido.");
-        }
+        System.out.println("\n--- Análise Terminada ---");
+        System.out.println("Número de Configurações Recorrentes encontradas e testadas: " + countRecorrentes);
 
-        int[][] C_resultante = calculateStableAddition(matrizA, matrizE);
-
-        if (C_resultante == null) {
-            System.out.println("\nERRO: O cálculo de estabilização falhou (Laplaciana Reduzida singular).");
-            System.out.println("----------------------------------------------------------------------\n");
-            return;
-        }
-
-        System.out.println("\nMatriz A (Original):");
-        imprimirMatriz(matrizA);
-        System.out.println("\nMatriz Resultante (A ⊕ E):");
-        imprimirMatriz(C_resultante);
-
-        if (areMatrizesIguais(matrizA, C_resultante)) {
-            System.out.println("\nRESULTADO: SIM, a Matriz E fornecida funciona como o Elemento Neutro para A.");
+        if (isNeutro) {
+            System.out.println("\nRESULTADO: SIM, a Matriz E fornecida funciona como o Elemento Neutro.");
         } else {
-            System.out.println("\nRESULTADO: NÃO, a Matriz E fornecida NÃO é o Elemento Neutro para A, pois A ⊕ E ≠ A.");
+            System.out.println("\nRESULTADO: NÃO, a Matriz E fornecida NÃO é o Elemento Neutro.");
         }
 
         System.out.println("----------------------------------------------------------------------\n");
